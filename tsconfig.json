@@ -1,11 +1,13 @@
 {
+    "extends": "@tsconfig/node20/tsconfig.json",
     "compilerOptions": {
-        "target": "es2018",
-        "module": "commonjs",
-        "jsx": "preserve",
-        "strict": true,
-        "esModuleInterop": true,
-        "lib": ["es2018", "esnext.asynciterable"]
+        "outDir": "dist",
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "moduleResolution": "node",
+        "module": "esnext", // Change module option to 'esnext'
+        "target": "es2017"  // Ensure target option is set to 'es2017' or higher
     },
-    "exclude": ["/node_modules"]
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
 }

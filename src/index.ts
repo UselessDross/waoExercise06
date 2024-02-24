@@ -1,36 +1,17 @@
-// index.js
-const express = require('express');
-const app = express();
-const port = 5555;
-const { graphqlHTTP } = require('express-graphql');
-const { buildSchema } = require('graphql');
-import { Request, Response } from "express";
+import bodyParser from 'body-parser';
+// import express from 'express';
+import { ApolloServer } from '@apollo/server';
+import { typeDefs } from '../data/graphql/typeDefs';
+import resolvers from '../data/graphql/resolvers';
+import { startStandaloneServer } from '@apollo/server/standalone';
 
-// Define the schema
-let schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
-
-// Implement resolver functions
-let root = {
-    hello: function () {
-        return 'Hello world!';
-    },
-}
-
-// Set up an endpoint
-app.use('/graphql', graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true,
-}));
-
-app.get('/', function (req: Request, res: Response) {
-    res.send('Express is working!')
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
 });
 
-app.listen(port, function () {
-    console.log('Listening on port:' + port)
+const { url } = await startStandaloneServer(server, {
+  listen: { port: 3000 },
 });
+
+console.log(`🚀  Apollo GraphQL server ready at: ${url}`);
